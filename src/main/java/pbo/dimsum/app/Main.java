@@ -5,15 +5,14 @@ import javax.swing.UIManager;
 import pbo.dimsum.view.FormLogin;
 
 public class Main {
-    public static void main(String[] args) {
+
+    static void main() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
             System.out.println("Look and feel default digunakan.");
         }
 
-        SwingUtilities.invokeLater(() -> {
-            new FormLogin().setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new FormLogin().setVisible(true));
     }
 }

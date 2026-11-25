@@ -1,5 +1,6 @@
 package pbo.dimsum.view;
 
+import pbo.dimsum.config.PenangananError;
 import pbo.dimsum.dao.OperasiCRUD;
 import pbo.dimsum.dao.SupplierDAO;
 import pbo.dimsum.model.Supplier;
@@ -11,6 +12,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
 public class FormSupplier extends JFrame {
+
     private final JTextField fieldId = new JTextField();
     private final JTextField fieldNama = new JTextField();
     private final JTextField fieldTelp = new JTextField();
@@ -34,10 +36,14 @@ public class FormSupplier extends JFrame {
 
     private void buatTampilan() {
         JPanel form = new JPanel(new GridLayout(4, 2, 8, 8));
-        form.add(new JLabel("ID Supplier (Otomatis):")); form.add(fieldId);
-        form.add(new JLabel("Nama Supplier:")); form.add(fieldNama);
-        form.add(new JLabel("No. Telepon:")); form.add(fieldTelp);
-        form.add(new JLabel("Alamat:")); form.add(fieldAlamat);
+        form.add(new JLabel("ID Supplier (Otomatis):"));
+        form.add(fieldId);
+        form.add(new JLabel("Nama Supplier:"));
+        form.add(fieldNama);
+        form.add(new JLabel("No. Telepon:"));
+        form.add(fieldTelp);
+        form.add(new JLabel("Alamat:"));
+        form.add(fieldAlamat);
 
         JButton tombolSimpan = new JButton("Simpan");
         JButton tombolUbah = new JButton("Ubah");
@@ -65,12 +71,12 @@ public class FormSupplier extends JFrame {
         add(new JScrollPane(tabel), BorderLayout.CENTER);
         add(panelCari, BorderLayout.SOUTH);
 
-        tombolSimpan.addActionListener(e -> simpan());
-        tombolUbah.addActionListener(e -> ubah());
-        tombolHapus.addActionListener(e -> hapus());
-        tombolBersih.addActionListener(e -> bersihkan());
-        tombolCari.addActionListener(e -> cari());
-        tombolRefresh.addActionListener(e -> refresh());
+        tombolSimpan.addActionListener(_ -> simpan());
+        tombolUbah.addActionListener(_ -> ubah());
+        tombolHapus.addActionListener(_ -> hapus());
+        tombolBersih.addActionListener(_ -> bersihkan());
+        tombolCari.addActionListener(_ -> cari());
+        tombolRefresh.addActionListener(_ -> refresh());
         tabel.getSelectionModel().addListSelectionListener(this::pilihBaris);
     }
 
@@ -89,7 +95,7 @@ public class FormSupplier extends JFrame {
         try {
             isiTabel(dao.getAll());
         } catch (SQLException ex) {
-            tampilKesalahan("Data tidak dapat dimuat", ex);
+            PenangananError.tampilKesalahan(this, "Data tidak dapat dimuat", "Periksa koneksi dan data.", ex);
         }
     }
 
@@ -102,7 +108,7 @@ public class FormSupplier extends JFrame {
         try {
             isiTabel(dao.search(kata));
         } catch (SQLException ex) {
-            tampilKesalahan("Pencarian gagal", ex);
+            PenangananError.tampilKesalahan(this, "Pencarian gagal", "Periksa koneksi dan data.", ex);
         }
     }
 
@@ -112,18 +118,18 @@ public class FormSupplier extends JFrame {
         bersihkan();
     }
 
-    private boolean validasiInput() {
+    private boolean inputTidakValid() {
         if (fieldNama.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nama supplier wajib diisi.");
             fieldNama.requestFocus();
-            return false;
+            return true;
         }
         if (fieldTelp.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nomor telepon wajib diisi.");
             fieldTelp.requestFocus();
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     private Supplier ambilSupplierDariForm() {
@@ -137,7 +143,9 @@ public class FormSupplier extends JFrame {
     }
 
     private void simpan() {
-        if (!validasiInput()) return;
+        if (inputTidakValid()) {
+            return;
+        }
         try {
             boolean berhasil = dao.insert(ambilSupplierDariForm());
             if (berhasil) {
@@ -146,12 +154,14 @@ public class FormSupplier extends JFrame {
                 bersihkan();
             }
         } catch (SQLException ex) {
-            tampilKesalahan("Data gagal disimpan", ex);
+            PenangananError.tampilKesalahan(this, "Data gagal disimpan", "Periksa koneksi dan data.", ex);
         }
     }
 
     private void pilihBaris(ListSelectionEvent event) {
-        if (event.getValueIsAdjusting()) return;
+        if (event.getValueIsAdjusting()) {
+            return;
+        }
         int baris = tabel.getSelectedRow();
         if (baris >= 0) {
             fieldId.setText(model.getValueAt(baris, 0).toString());
@@ -166,7 +176,9 @@ public class FormSupplier extends JFrame {
             JOptionPane.showMessageDialog(this, "Pilih data yang akan diubah.");
             return;
         }
-        if (!validasiInput()) return;
+        if (inputTidakValid()) {
+            return;
+        }
         try {
             boolean berhasil = dao.update(ambilSupplierDariForm());
             if (berhasil) {
@@ -177,7 +189,7 @@ public class FormSupplier extends JFrame {
                 JOptionPane.showMessageDialog(this, "Data tidak ditemukan.");
             }
         } catch (SQLException ex) {
-            tampilKesalahan("Data gagal diubah", ex);
+            PenangananError.tampilKesalahan(this, "Data gagal diubah", "Periksa koneksi dan data.", ex);
         }
     }
 
@@ -192,7 +204,9 @@ public class FormSupplier extends JFrame {
         int jawaban = JOptionPane.showConfirmDialog(this,
                 "Hapus supplier " + nama + "?", "Konfirmasi Hapus",
                 JOptionPane.YES_NO_OPTION);
-        if (jawaban != JOptionPane.YES_OPTION) return;
+        if (jawaban != JOptionPane.YES_OPTION) {
+            return;
+        }
         try {
             if (dao.delete(id)) {
                 JOptionPane.showMessageDialog(this, "Data berhasil dihapus.");
@@ -200,7 +214,7 @@ public class FormSupplier extends JFrame {
                 bersihkan();
             }
         } catch (SQLException ex) {
-            tampilKesalahan("Data gagal dihapus", ex);
+            PenangananError.tampilKesalahan(this, "Data gagal dihapus", "Periksa koneksi dan data.", ex);
         }
     }
 
@@ -211,12 +225,5 @@ public class FormSupplier extends JFrame {
         fieldAlamat.setText("");
         tabel.clearSelection();
         fieldNama.requestFocus();
-    }
-
-    private void tampilKesalahan(String pesan, SQLException ex) {
-        System.out.println(pesan + ": " + ex.getMessage());
-        JOptionPane.showMessageDialog(this,
-                pesan + ". Periksa koneksi dan data.",
-                "Kesalahan", JOptionPane.ERROR_MESSAGE);
     }
 }

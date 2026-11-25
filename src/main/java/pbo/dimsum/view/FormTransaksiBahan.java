@@ -1,5 +1,6 @@
 package pbo.dimsum.view;
 
+import pbo.dimsum.config.PenangananError;
 import pbo.dimsum.dao.BahanBakuDAO;
 import pbo.dimsum.dao.PermintaanDAO;
 import pbo.dimsum.model.BahanBaku;
@@ -14,6 +15,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class FormTransaksiBahan extends JFrame {
+
     private final User session;
     private final JTextField fieldNoTransaksi = new JTextField(16);
     private final JTextField fieldPetugas = new JTextField(18);
@@ -41,10 +43,14 @@ public class FormTransaksiBahan extends JFrame {
 
     private void buatTampilan() {
         JPanel form = new JPanel(new GridLayout(2, 4, 8, 8));
-        form.add(new JLabel("No. Transaksi:")); form.add(fieldNoTransaksi);
-        form.add(new JLabel("Petugas:")); form.add(fieldPetugas);
-        form.add(new JLabel("Pilih Bahan:")); form.add(comboBahan);
-        form.add(new JLabel("Jumlah Ambil:")); form.add(fieldJumlah);
+        form.add(new JLabel("No. Transaksi:"));
+        form.add(fieldNoTransaksi);
+        form.add(new JLabel("Petugas:"));
+        form.add(fieldPetugas);
+        form.add(new JLabel("Pilih Bahan:"));
+        form.add(comboBahan);
+        form.add(new JLabel("Jumlah Ambil:"));
+        form.add(fieldJumlah);
 
         JButton tombolTambah = new JButton("Tambah ke Daftar");
         JButton tombolHapusItem = new JButton("Hapus Baris");
@@ -68,11 +74,11 @@ public class FormTransaksiBahan extends JFrame {
         add(new JScrollPane(tabel), BorderLayout.CENTER);
         add(panelBawah, BorderLayout.SOUTH);
 
-        tombolTambah.addActionListener(e -> tambahItem());
-        tombolHapusItem.addActionListener(e -> hapusItem());
-        tombolBersih.addActionListener(e -> bersihkan());
-        tombolSimpan.addActionListener(e -> simpan());
-        tombolRiwayat.addActionListener(e -> lihatRiwayat());
+        tombolTambah.addActionListener(_ -> tambahItem());
+        tombolHapusItem.addActionListener(_ -> hapusItem());
+        tombolBersih.addActionListener(_ -> bersihkan());
+        tombolSimpan.addActionListener(_ -> simpan());
+        tombolRiwayat.addActionListener(_ -> lihatRiwayat());
     }
 
     private void muatDataAwal() {
@@ -84,13 +90,15 @@ public class FormTransaksiBahan extends JFrame {
                 comboBahan.addItem(bahan);
             }
         } catch (SQLException ex) {
-            tampilKesalahan("Gagal memuat data awal", ex);
+            PenangananError.tampilKesalahan(this, "Gagal memuat data awal", "Periksa koneksi dan ketersediaan stok.", ex);
         }
     }
 
     private void tambahItem() {
         BahanBaku bahan = (BahanBaku) comboBahan.getSelectedItem();
-        if (bahan == null) return;
+        if (bahan == null) {
+            return;
+        }
 
         int jumlah;
         try {
@@ -156,7 +164,9 @@ public class FormTransaksiBahan extends JFrame {
         int jawaban = JOptionPane.showConfirmDialog(this,
                 "Simpan transaksi " + fieldNoTransaksi.getText() + "?", "Konfirmasi Simpan",
                 JOptionPane.YES_NO_OPTION);
-        if (jawaban != JOptionPane.YES_OPTION) return;
+        if (jawaban != JOptionPane.YES_OPTION) {
+            return;
+        }
 
         try {
             String idTrx = fieldNoTransaksi.getText();
@@ -175,7 +185,7 @@ public class FormTransaksiBahan extends JFrame {
                 muatDataAwal();
             }
         } catch (SQLException ex) {
-            tampilKesalahan("Transaksi gagal disimpan", ex);
+            PenangananError.tampilKesalahan(this, "Transaksi gagal disimpan", "Periksa koneksi dan ketersediaan stok.", ex);
         }
     }
 
@@ -199,14 +209,7 @@ public class FormTransaksiBahan extends JFrame {
             JOptionPane.showMessageDialog(this, new JScrollPane(area),
                     "Riwayat Transaksi Dapur", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
-            tampilKesalahan("Gagal memuat riwayat transaksi", ex);
+            PenangananError.tampilKesalahan(this, "Gagal memuat riwayat transaksi", "Periksa koneksi dan ketersediaan stok.", ex);
         }
-    }
-
-    private void tampilKesalahan(String pesan, SQLException ex) {
-        System.out.println(pesan + ": " + ex.getMessage());
-        JOptionPane.showMessageDialog(this,
-                pesan + ". Periksa koneksi dan ketersediaan stok.",
-                "Kesalahan", JOptionPane.ERROR_MESSAGE);
     }
 }

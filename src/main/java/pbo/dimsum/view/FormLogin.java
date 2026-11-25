@@ -1,5 +1,6 @@
 package pbo.dimsum.view;
 
+import pbo.dimsum.config.PenangananError;
 import pbo.dimsum.dao.UserDAO;
 import pbo.dimsum.model.User;
 import javax.swing.*;
@@ -8,6 +9,7 @@ import java.awt.*;
 import java.sql.SQLException;
 
 public class FormLogin extends JFrame {
+
     private final JTextField fieldUsername = new JTextField();
     private final JPasswordField fieldPassword = new JPasswordField();
     private final JButton tombolLogin = new JButton("LOGIN");
@@ -41,7 +43,7 @@ public class FormLogin extends JFrame {
 
         tombolLogin.setFont(new Font("SansSerif", Font.BOLD, 13));
         tombolLogin.setPreferredSize(new Dimension(0, 36));
-        tombolLogin.addActionListener(e -> prosesLogin());
+        tombolLogin.addActionListener(_ -> prosesLogin());
 
         mainPanel.add(panelJudul, BorderLayout.NORTH);
         mainPanel.add(panelForm, BorderLayout.CENTER);
@@ -70,14 +72,7 @@ public class FormLogin extends JFrame {
                 JOptionPane.showMessageDialog(this, "Username atau Password salah.", "Login Gagal", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException ex) {
-            tampilKesalahan("Gagal terhubung ke database", ex);
+            PenangananError.tampilKesalahan(this, "Gagal terhubung ke database", "Periksa koneksi database.", ex);
         }
-    }
-
-    private void tampilKesalahan(String pesan, SQLException ex) {
-        System.out.println(pesan + ": " + ex.getMessage());
-        JOptionPane.showMessageDialog(this,
-                pesan + ". Periksa koneksi database.",
-                "Kesalahan", JOptionPane.ERROR_MESSAGE);
     }
 }

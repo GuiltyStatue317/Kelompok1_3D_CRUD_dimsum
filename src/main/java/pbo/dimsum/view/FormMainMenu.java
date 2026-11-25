@@ -1,5 +1,6 @@
 package pbo.dimsum.view;
 
+import pbo.dimsum.config.PenangananError;
 import pbo.dimsum.dao.BahanBakuDAO;
 import pbo.dimsum.dao.DimsumDAO;
 import pbo.dimsum.dao.SupplierDAO;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FormMainMenu extends JFrame {
+
     private final User session;
     private final JLabel lblWelcome = new JLabel();
     private final JButton btnSupplier = new JButton("DATA SUPPLIER (Pemasok)");
@@ -62,12 +64,12 @@ public class FormMainMenu extends JFrame {
         mainPanel.add(panelBawah, BorderLayout.SOUTH);
         setContentPane(mainPanel);
 
-        btnSupplier.addActionListener(e -> new FormSupplier().setVisible(true));
-        btnBahanBaku.addActionListener(e -> new FormBahanBaku().setVisible(true));
-        btnDimsum.addActionListener(e -> new FormDimsum().setVisible(true));
-        btnTransaksi.addActionListener(e -> new FormTransaksiBahan(session).setVisible(true));
-        btnRingkasan.addActionListener(e -> tampilkanRingkasanPolimorfik());
-        btnLogout.addActionListener(e -> {
+        btnSupplier.addActionListener(_ -> new FormSupplier().setVisible(true));
+        btnBahanBaku.addActionListener(_ -> new FormBahanBaku().setVisible(true));
+        btnDimsum.addActionListener(_ -> new FormDimsum().setVisible(true));
+        btnTransaksi.addActionListener(_ -> new FormTransaksiBahan(session).setVisible(true));
+        btnRingkasan.addActionListener(_ -> tampilkanRingkasanPolimorfik());
+        btnLogout.addActionListener(_ -> {
             new FormLogin().setVisible(true);
             this.dispose();
         });
@@ -100,8 +102,7 @@ public class FormMainMenu extends JFrame {
             JOptionPane.showMessageDialog(this, new JScrollPane(area),
                     "Ringkasan Data Master", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
-            System.out.println("Gagal memuat ringkasan: " + ex.getMessage());
-            JOptionPane.showMessageDialog(this, "Gagal memuat ringkasan data.", "Kesalahan", JOptionPane.ERROR_MESSAGE);
+            PenangananError.tampilKesalahan(this, "Gagal memuat ringkasan data", "Periksa koneksi database.", ex);
         }
     }
 }

@@ -11,9 +11,7 @@ public class SupplierDAO implements OperasiCRUD<Supplier> {
     public List<Supplier> getAll() throws SQLException {
         List<Supplier> list = new ArrayList<>();
         String sql = "SELECT * FROM supplier ORDER BY id_supplier";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(mapRow(rs));
             }
@@ -24,8 +22,7 @@ public class SupplierDAO implements OperasiCRUD<Supplier> {
     public List<Supplier> search(String keyword) throws SQLException {
         List<Supplier> list = new ArrayList<>();
         String sql = "SELECT * FROM supplier WHERE nama_supplier LIKE ? OR alamat LIKE ? ORDER BY id_supplier";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             String pola = "%" + keyword + "%";
             ps.setString(1, pola);
             ps.setString(2, pola);
@@ -40,8 +37,7 @@ public class SupplierDAO implements OperasiCRUD<Supplier> {
 
     public boolean insert(Supplier s) throws SQLException {
         String sql = "INSERT INTO supplier (nama_supplier, no_telp, alamat) VALUES (?, ?, ?)";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, s.getNamaSupplier());
             ps.setString(2, s.getNoTelp());
             ps.setString(3, s.getAlamat());
@@ -51,8 +47,7 @@ public class SupplierDAO implements OperasiCRUD<Supplier> {
 
     public boolean update(Supplier s) throws SQLException {
         String sql = "UPDATE supplier SET nama_supplier = ?, no_telp = ?, alamat = ? WHERE id_supplier = ?";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, s.getNamaSupplier());
             ps.setString(2, s.getNoTelp());
             ps.setString(3, s.getAlamat());
@@ -63,8 +58,7 @@ public class SupplierDAO implements OperasiCRUD<Supplier> {
 
     public boolean delete(int idSupplier) throws SQLException {
         String sql = "DELETE FROM supplier WHERE id_supplier = ?";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idSupplier);
             return ps.executeUpdate() > 0;
         }

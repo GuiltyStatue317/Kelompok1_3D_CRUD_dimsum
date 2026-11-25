@@ -11,9 +11,7 @@ public class DimsumDAO implements OperasiCRUD<Dimsum> {
     public List<Dimsum> getAll() throws SQLException {
         List<Dimsum> list = new ArrayList<>();
         String sql = "SELECT * FROM dimsum ORDER BY id_dimsum";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(mapRow(rs));
             }
@@ -24,8 +22,7 @@ public class DimsumDAO implements OperasiCRUD<Dimsum> {
     public List<Dimsum> search(String keyword) throws SQLException {
         List<Dimsum> list = new ArrayList<>();
         String sql = "SELECT * FROM dimsum WHERE nama_dimsum LIKE ? ORDER BY id_dimsum";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, "%" + keyword + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -38,8 +35,7 @@ public class DimsumDAO implements OperasiCRUD<Dimsum> {
 
     public boolean insert(Dimsum d) throws SQLException {
         String sql = "INSERT INTO dimsum (nama_dimsum, stok_matang) VALUES (?, ?)";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, d.getNamaDimsum());
             ps.setInt(2, d.getStokMatang());
             return ps.executeUpdate() > 0;
@@ -48,8 +44,7 @@ public class DimsumDAO implements OperasiCRUD<Dimsum> {
 
     public boolean update(Dimsum d) throws SQLException {
         String sql = "UPDATE dimsum SET nama_dimsum = ?, stok_matang = ? WHERE id_dimsum = ?";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, d.getNamaDimsum());
             ps.setInt(2, d.getStokMatang());
             ps.setInt(3, d.getIdDimsum());
@@ -59,8 +54,7 @@ public class DimsumDAO implements OperasiCRUD<Dimsum> {
 
     public boolean delete(int idDimsum) throws SQLException {
         String sql = "DELETE FROM dimsum WHERE id_dimsum = ?";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idDimsum);
             return ps.executeUpdate() > 0;
         }

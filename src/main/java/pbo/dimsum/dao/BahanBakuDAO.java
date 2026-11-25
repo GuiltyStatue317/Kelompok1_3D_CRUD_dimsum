@@ -11,9 +11,7 @@ public class BahanBakuDAO implements OperasiCRUD<BahanBaku> {
     public List<BahanBaku> getAll() throws SQLException {
         List<BahanBaku> list = new ArrayList<>();
         String sql = "SELECT * FROM bahan_baku ORDER BY id_bahan";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 list.add(mapRow(rs));
             }
@@ -24,8 +22,7 @@ public class BahanBakuDAO implements OperasiCRUD<BahanBaku> {
     public List<BahanBaku> search(String keyword) throws SQLException {
         List<BahanBaku> list = new ArrayList<>();
         String sql = "SELECT * FROM bahan_baku WHERE nama_bahan LIKE ? ORDER BY id_bahan";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, "%" + keyword + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -38,8 +35,7 @@ public class BahanBakuDAO implements OperasiCRUD<BahanBaku> {
 
     public boolean insert(BahanBaku b) throws SQLException {
         String sql = "INSERT INTO bahan_baku (nama_bahan, stok_gudang, satuan) VALUES (?, ?, ?)";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, b.getNamaBahan());
             ps.setInt(2, b.getStokGudang());
             ps.setString(3, b.getSatuan());
@@ -49,8 +45,7 @@ public class BahanBakuDAO implements OperasiCRUD<BahanBaku> {
 
     public boolean update(BahanBaku b) throws SQLException {
         String sql = "UPDATE bahan_baku SET nama_bahan = ?, stok_gudang = ?, satuan = ? WHERE id_bahan = ?";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, b.getNamaBahan());
             ps.setInt(2, b.getStokGudang());
             ps.setString(3, b.getSatuan());
@@ -61,8 +56,7 @@ public class BahanBakuDAO implements OperasiCRUD<BahanBaku> {
 
     public boolean delete(int idBahan) throws SQLException {
         String sql = "DELETE FROM bahan_baku WHERE id_bahan = ?";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idBahan);
             return ps.executeUpdate() > 0;
         }

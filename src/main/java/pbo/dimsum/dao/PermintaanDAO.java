@@ -16,8 +16,7 @@ public class PermintaanDAO {
         String prefix = "TRX-" + tanggal + "-";
         String sql = "SELECT id_permintaan FROM permintaan_bahan WHERE id_permintaan LIKE ? ORDER BY id_permintaan DESC LIMIT 1";
 
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, prefix + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -29,12 +28,11 @@ public class PermintaanDAO {
         }
         return prefix + "001";
     }
+
     public List<PermintaanBahan> getRiwayatHeader() throws SQLException {
         List<PermintaanBahan> daftar = new ArrayList<>();
         String sql = "SELECT * FROM permintaan_bahan ORDER BY tgl_permintaan DESC";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 PermintaanBahan p = new PermintaanBahan();
                 p.setIdPermintaan(rs.getString("id_permintaan"));
@@ -50,8 +48,7 @@ public class PermintaanDAO {
     public List<DetailPermintaan> getDetailByTransaksi(String idPermintaan) throws SQLException {
         List<DetailPermintaan> daftar = new ArrayList<>();
         String sql = "SELECT * FROM detail_permintaan WHERE id_permintaan = ?";
-        try (Connection conn = Koneksi.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Koneksi.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, idPermintaan);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -84,8 +81,7 @@ public class PermintaanDAO {
                 psHeader.executeUpdate();
             }
 
-            try (PreparedStatement psDetail = conn.prepareStatement(sqlDetail);
-                 PreparedStatement psStok = conn.prepareStatement(sqlPotongStok)) {
+            try (PreparedStatement psDetail = conn.prepareStatement(sqlDetail); PreparedStatement psStok = conn.prepareStatement(sqlPotongStok)) {
 
                 for (DetailPermintaan item : details) {
                     psStok.setInt(1, item.getJumlahDiambil());

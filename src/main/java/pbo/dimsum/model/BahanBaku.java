@@ -1,6 +1,7 @@
 package pbo.dimsum.model;
 
 public class BahanBaku extends EntitasMaster {
+
     private int stokGudang;
     private String satuan;
 
@@ -14,21 +15,39 @@ public class BahanBaku extends EntitasMaster {
         this.satuan = satuan;
     }
 
-    public int getIdBahan() { return getId(); }
-    public void setIdBahan(int idBahan) { setId(idBahan); }
+    public int getIdBahan() {
+        return getId();
+    }
 
-    public String getNamaBahan() { return getNama(); }
-    public void setNamaBahan(String namaBahan) { setNama(namaBahan); }
+    public void setIdBahan(int idBahan) {
+        setId(idBahan);
+    }
 
-    public int getStokGudang() { return stokGudang; }
+    public String getNamaBahan() {
+        return getNama();
+    }
+
+    public void setNamaBahan(String namaBahan) {
+        setNama(namaBahan);
+    }
+
+    public int getStokGudang() {
+        return stokGudang;
+    }
+
     public void setStokGudang(int stokGudang) {
         if (stokGudang >= 0) {
             this.stokGudang = stokGudang;
         }
     }
 
-    public String getSatuan() { return satuan; }
-    public void setSatuan(String satuan) { this.satuan = satuan; }
+    public String getSatuan() {
+        return satuan;
+    }
+
+    public void setSatuan(String satuan) {
+        this.satuan = satuan;
+    }
 
     @Override
     public String getInfoRingkas() {

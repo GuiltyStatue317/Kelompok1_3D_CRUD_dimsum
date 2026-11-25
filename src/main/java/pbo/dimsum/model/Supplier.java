@@ -1,6 +1,7 @@
 package pbo.dimsum.model;
 
 public class Supplier extends EntitasMaster {
+
     private String noTelp;
     private String alamat;
 
@@ -14,17 +15,37 @@ public class Supplier extends EntitasMaster {
         this.alamat = alamat;
     }
 
-    public int getIdSupplier() { return getId(); }
-    public void setIdSupplier(int idSupplier) { setId(idSupplier); }
+    public int getIdSupplier() {
+        return getId();
+    }
 
-    public String getNamaSupplier() { return getNama(); }
-    public void setNamaSupplier(String namaSupplier) { setNama(namaSupplier); }
+    public void setIdSupplier(int idSupplier) {
+        setId(idSupplier);
+    }
 
-    public String getNoTelp() { return noTelp; }
-    public void setNoTelp(String noTelp) { this.noTelp = noTelp; }
+    public String getNamaSupplier() {
+        return getNama();
+    }
 
-    public String getAlamat() { return alamat; }
-    public void setAlamat(String alamat) { this.alamat = alamat; }
+    public void setNamaSupplier(String namaSupplier) {
+        setNama(namaSupplier);
+    }
+
+    public String getNoTelp() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp = noTelp;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
 
     @Override
     public String getInfoRingkas() {

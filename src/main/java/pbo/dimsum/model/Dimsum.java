@@ -1,6 +1,7 @@
 package pbo.dimsum.model;
 
 public class Dimsum extends EntitasMaster {
+
     private int stokMatang;
 
     public Dimsum() {
@@ -12,13 +13,26 @@ public class Dimsum extends EntitasMaster {
         setStokMatang(stokMatang);
     }
 
-    public int getIdDimsum() { return getId(); }
-    public void setIdDimsum(int idDimsum) { setId(idDimsum); }
+    public int getIdDimsum() {
+        return getId();
+    }
 
-    public String getNamaDimsum() { return getNama(); }
-    public void setNamaDimsum(String namaDimsum) { setNama(namaDimsum); }
+    public void setIdDimsum(int idDimsum) {
+        setId(idDimsum);
+    }
 
-    public int getStokMatang() { return stokMatang; }
+    public String getNamaDimsum() {
+        return getNama();
+    }
+
+    public void setNamaDimsum(String namaDimsum) {
+        setNama(namaDimsum);
+    }
+
+    public int getStokMatang() {
+        return stokMatang;
+    }
+
     public void setStokMatang(int stokMatang) {
         if (stokMatang >= 0) {
             this.stokMatang = stokMatang;

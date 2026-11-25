@@ -1,5 +1,6 @@
 package pbo.dimsum.view;
 
+import pbo.dimsum.config.PenangananError;
 import pbo.dimsum.dao.DimsumDAO;
 import pbo.dimsum.dao.OperasiCRUD;
 import pbo.dimsum.model.Dimsum;
@@ -11,6 +12,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
 public class FormDimsum extends JFrame {
+
     private final JTextField fieldId = new JTextField();
     private final JTextField fieldNama = new JTextField();
     private final JTextField fieldStok = new JTextField();
@@ -33,9 +35,12 @@ public class FormDimsum extends JFrame {
 
     private void buatTampilan() {
         JPanel form = new JPanel(new GridLayout(3, 2, 8, 8));
-        form.add(new JLabel("ID Dimsum (Otomatis):")); form.add(fieldId);
-        form.add(new JLabel("Nama Dimsum:")); form.add(fieldNama);
-        form.add(new JLabel("Stok Matang:")); form.add(fieldStok);
+        form.add(new JLabel("ID Dimsum (Otomatis):"));
+        form.add(fieldId);
+        form.add(new JLabel("Nama Dimsum:"));
+        form.add(fieldNama);
+        form.add(new JLabel("Stok Matang:"));
+        form.add(fieldStok);
 
         JButton tombolSimpan = new JButton("Simpan");
         JButton tombolUbah = new JButton("Ubah");
@@ -63,12 +68,12 @@ public class FormDimsum extends JFrame {
         add(new JScrollPane(tabel), BorderLayout.CENTER);
         add(panelCari, BorderLayout.SOUTH);
 
-        tombolSimpan.addActionListener(e -> simpan());
-        tombolUbah.addActionListener(e -> ubah());
-        tombolHapus.addActionListener(e -> hapus());
-        tombolBersih.addActionListener(e -> bersihkan());
-        tombolCari.addActionListener(e -> cari());
-        tombolRefresh.addActionListener(e -> refresh());
+        tombolSimpan.addActionListener(_ -> simpan());
+        tombolUbah.addActionListener(_ -> ubah());
+        tombolHapus.addActionListener(_ -> hapus());
+        tombolBersih.addActionListener(_ -> bersihkan());
+        tombolCari.addActionListener(_ -> cari());
+        tombolRefresh.addActionListener(_ -> refresh());
         tabel.getSelectionModel().addListSelectionListener(this::pilihBaris);
     }
 
@@ -86,7 +91,7 @@ public class FormDimsum extends JFrame {
         try {
             isiTabel(dao.getAll());
         } catch (SQLException ex) {
-            tampilKesalahan("Data tidak dapat dimuat", ex);
+            PenangananError.tampilKesalahan(this, "Data tidak dapat dimuat", "Periksa koneksi dan data.", ex);
         }
     }
 
@@ -99,7 +104,7 @@ public class FormDimsum extends JFrame {
         try {
             isiTabel(dao.search(kata));
         } catch (SQLException ex) {
-            tampilKesalahan("Pencarian gagal", ex);
+            PenangananError.tampilKesalahan(this, "Pencarian gagal", "Periksa koneksi dan data.", ex);
         }
     }
 
@@ -109,13 +114,13 @@ public class FormDimsum extends JFrame {
         bersihkan();
     }
 
-    private boolean validasiInput() {
+    private boolean inputTidakValid() {
         String nama = fieldNama.getText().trim();
         String stok = fieldStok.getText().trim();
         if (nama.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nama dimsum wajib diisi.");
             fieldNama.requestFocus();
-            return false;
+            return true;
         }
         try {
             int nilaiStok = Integer.parseInt(stok);
@@ -125,9 +130,9 @@ public class FormDimsum extends JFrame {
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Stok harus berupa angka minimal 0.");
             fieldStok.requestFocus();
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     private Dimsum ambilDimsumDariForm() {
@@ -140,7 +145,9 @@ public class FormDimsum extends JFrame {
     }
 
     private void simpan() {
-        if (!validasiInput()) return;
+        if (inputTidakValid()) {
+            return;
+        }
         try {
             boolean berhasil = dao.insert(ambilDimsumDariForm());
             if (berhasil) {
@@ -149,12 +156,14 @@ public class FormDimsum extends JFrame {
                 bersihkan();
             }
         } catch (SQLException ex) {
-            tampilKesalahan("Data gagal disimpan", ex);
+            PenangananError.tampilKesalahan(this, "Data gagal disimpan", "Periksa koneksi dan data.", ex);
         }
     }
 
     private void pilihBaris(ListSelectionEvent event) {
-        if (event.getValueIsAdjusting()) return;
+        if (event.getValueIsAdjusting()) {
+            return;
+        }
         int baris = tabel.getSelectedRow();
         if (baris >= 0) {
             fieldId.setText(model.getValueAt(baris, 0).toString());
@@ -168,7 +177,9 @@ public class FormDimsum extends JFrame {
             JOptionPane.showMessageDialog(this, "Pilih data yang akan diubah.");
             return;
         }
-        if (!validasiInput()) return;
+        if (inputTidakValid()) {
+            return;
+        }
         try {
             boolean berhasil = dao.update(ambilDimsumDariForm());
             if (berhasil) {
@@ -179,7 +190,7 @@ public class FormDimsum extends JFrame {
                 JOptionPane.showMessageDialog(this, "Data tidak ditemukan.");
             }
         } catch (SQLException ex) {
-            tampilKesalahan("Data gagal diubah", ex);
+            PenangananError.tampilKesalahan(this, "Data gagal diubah", "Periksa koneksi dan data.", ex);
         }
     }
 
@@ -194,7 +205,9 @@ public class FormDimsum extends JFrame {
         int jawaban = JOptionPane.showConfirmDialog(this,
                 "Hapus dimsum " + nama + "?", "Konfirmasi Hapus",
                 JOptionPane.YES_NO_OPTION);
-        if (jawaban != JOptionPane.YES_OPTION) return;
+        if (jawaban != JOptionPane.YES_OPTION) {
+            return;
+        }
         try {
             if (dao.delete(id)) {
                 JOptionPane.showMessageDialog(this, "Data berhasil dihapus.");
@@ -202,7 +215,7 @@ public class FormDimsum extends JFrame {
                 bersihkan();
             }
         } catch (SQLException ex) {
-            tampilKesalahan("Data gagal dihapus", ex);
+            PenangananError.tampilKesalahan(this, "Data gagal dihapus", "Periksa koneksi dan data.", ex);
         }
     }
 
@@ -212,12 +225,5 @@ public class FormDimsum extends JFrame {
         fieldStok.setText("");
         tabel.clearSelection();
         fieldNama.requestFocus();
-    }
-
-    private void tampilKesalahan(String pesan, SQLException ex) {
-        System.out.println(pesan + ": " + ex.getMessage());
-        JOptionPane.showMessageDialog(this,
-                pesan + ". Periksa koneksi dan data.",
-                "Kesalahan", JOptionPane.ERROR_MESSAGE);
     }
 }
