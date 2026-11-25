@@ -57,5 +57,5 @@ Aplikasi menerapkan pembatasan hak akses berdasarkan peran (*Role-Based Access C
 
 ## Referensi & Catatan Pengembangan
 
-* **Modul Perkuliahan:** Struktur arsitektur berlapis (`config`, `model`, `dao`, `view`, `app`), penerapan konsep OOP (*Encapsulation*, *Inheritance*, *Abstract Class*, *Interface*, *Polymorphism*), serta pola dasar CRUD dan *exception handling* mengacu pada **Modul Praktik Pemrograman Berorientasi Objek (Pertemuan 1–15)** oleh **Ahmad Zuhdi, S.Kom., M.Kom.**
+* **Modul Perkuliahan:** Struktur arsitektur berlapis (`config`, `model`, `dao`, `view`, `app`), penerapan konsep OOP (*Encapsulation*, *Inheritance*, *Abstract Class*, *Interface*, *Polymorphism*), serta pola dasar CRUD dan *exception handling* mengacu pada **Modul Praktik Pemrograman Berorientasi Objek (Pertemuan 1–15)** oleh  Dosen pengampu **Ahmad Zuhdi, S.Kom., M.Kom.**
 * **Pengembangan Fitur Lanjutan:** Implementasi komponen tambahan yang tidak dibahas di dalam modul praktik seperti autentikasi *login* dan pembagian hak akses (*RBAC*), transaksi multi-item dengan mekanisme `commit`/`rollback`, serta inisialisasi database otomatis dari skrip SQL dikembangkan dengan bantuan referensi eksternal seperti dari Mata Kuliah lain dan termasuk AI.
