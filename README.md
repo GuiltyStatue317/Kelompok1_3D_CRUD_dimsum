@@ -30,19 +30,19 @@ Aplikasi menerapkan pembatasan hak akses berdasarkan peran (*Role-Based Access C
 
 ### 2. Menjalankan Program
 * **Menggunakan File Executable JAR:**
-  1. Unduh file **`Kelompok1_3D_CRUD_dimsum-1.0.jar`** pada halaman **Releases** (atau *build* sendiri melalui terminal dengan perintah `./gradlew clean build` untuk menghasilkan *Fat JAR* di folder `build/libs/`).
-  2. Jalankan file `.jar` tersebut melalui terminal/CMD:
+1. Unduh file **`Kelompok1_3D_CRUD_dimsum-1.0.jar`** pada halaman **Releases** (atau *build* sendiri melalui terminal dengan perintah `./gradlew clean build` untuk menghasilkan *Fat JAR* di folder `build/libs/`).
+2. Jalankan file `.jar` tersebut melalui terminal/CMD:
      ```bash
      java -jar Kelompok1_3D_CRUD_dimsum-1.0.jar
      ```
 * **Menggunakan IntelliJ IDEA (Gradle):**
-  1. *Clone* atau buka folder proyek ini di IntelliJ IDEA.
-  2. Tunggu proses *Gradle Sync* mengunduh `mysql-connector-j:8.3.0`.
-  3. Jalankan file **`src/main/java/pbo/dimsum/app/Main.java`**.
+1. *Clone* atau buka folder proyek ini di IntelliJ IDEA.
+2. Tunggu proses *Gradle Sync* mengunduh `mysql-connector-j:8.3.0`.
+3. Jalankan file **`src/main/java/pbo/dimsum/app/Main.java`**.
 * **Menggunakan Apache NetBeans (Java with Ant):**
-  1. Buat proyek *Java Application* baru (tanpa *Main Class*).
-  2. Tambahkan library `mysql-connector-j-8.3.0.jar` pada menu *Libraries*.
-  3. Salin folder `pbo` dari `src/main/java/pbo` serta file **`database.sql`** dari `src/main/resources/` ke dalam folder `src/` proyek NetBeans, lalu jalankan `pbo.dimsum.app.Main`.
+1. Buat proyek *Java Application* baru (tanpa *Main Class*).
+2. Tambahkan library `mysql-connector-j-8.3.0.jar` pada menu *Libraries*.
+3. Salin folder `pbo` dari `src/main/java/pbo` serta file **`database.sql`** dari `src/main/resources/` ke dalam folder `src/` proyek NetBeans, lalu jalankan `pbo.dimsum.app.Main`.
 
 ---
 
@@ -52,3 +52,10 @@ Aplikasi menerapkan pembatasan hak akses berdasarkan peran (*Role-Based Access C
 | :--- | :--- | :--- | :--- |
 | **Staff (Gudang)** | `staff1` | `admin123` | Akses penuh Data Master (*Supplier, Bahan Baku, Dimsum*) |
 | **Koki (Dapur)** | `chef_cj` | `koki123` | Akses Transaksi Permintaan Bahan & Riwayat Transaksi |
+
+---
+
+## Referensi & Catatan Pengembangan
+
+* **Modul Perkuliahan:** Struktur arsitektur berlapis (`config`, `model`, `dao`, `view`, `app`), penerapan konsep OOP (*Encapsulation*, *Inheritance*, *Abstract Class*, *Interface*, *Polymorphism*), serta pola dasar CRUD dan *exception handling* mengacu pada **Modul Praktik Pemrograman Berorientasi Objek (Pertemuan 1–15)** oleh **Ahmad Zuhdi, S.Kom., M.Kom.**
+* **Pengembangan Fitur Lanjutan:** Implementasi komponen tambahan yang tidak dibahas di dalam modul praktik—seperti autentikasi *login* dan pembagian hak akses (*RBAC*), transaksi multi-item dengan mekanisme `commit`/`rollback`, inisialisasi database otomatis dari skrip SQL, serta pengemasan *Fat JAR*—dikembangkan dengan bantuan referensi eksternal seperti dari Mata Kuliah lain dan termasuk AI.
