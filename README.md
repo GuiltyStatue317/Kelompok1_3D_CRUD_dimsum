@@ -24,20 +24,25 @@ Aplikasi menerapkan pembatasan hak akses berdasarkan peran (*Role-Based Access C
 ## Cara Menjalankan Aplikasi
 
 ### 1. Persiapan Database
-1. Jalankan **Apache** dan **MySQL** pada **XAMPP Control Panel**.
-2. Buka `http://localhost/phpmyadmin`.
-3. Import atau jalankan skrip SQL dari file **`db_crud_dimsum.sql`** yang tersedia di repositori ini untuk membuat database `db_dapur_dimsum` beserta 6 tabel dan data awalnya.
-4. *(Opsional)* Sesuaikan port MySQL pada `src/main/java/pbo/dimsum/config/Koneksi.java` jika port XAMPP Anda berbeda dari `3306`.
+1. Jalankan **MySQL** pada **XAMPP Control Panel** (atau Laragon/MySQL Server).
+2. Anda **tidak perlu** membuat database atau meng-import skrip SQL secara manual di phpMyAdmin. Saat aplikasi pertama kali dijalankan, program akan otomatis membuat database **`db_crud_dimsum`**, 6 tabel beserta relasinya, serta mengisi data awalnya dari file **`src/main/resources/database.sql`**.
+3. *(Opsional)* Sesuaikan konfigurasi host, port, atau password MySQL pada `src/main/java/pbo/dimsum/config/Koneksi.java` jika port MySQL Anda berbeda dari `3306` atau menggunakan password.
 
 ### 2. Menjalankan Program
+* **Menggunakan File Executable JAR:**
+  1. Unduh file **`Kelompok1_3D_CRUD_dimsum-1.0.jar`** pada halaman **Releases** (atau *build* sendiri melalui terminal dengan perintah `./gradlew clean build` untuk menghasilkan *Fat JAR* di folder `build/libs/`).
+  2. Jalankan file `.jar` tersebut melalui terminal/CMD:
+     ```bash
+     java -jar Kelompok1_3D_CRUD_dimsum-1.0.jar
+     ```
 * **Menggunakan IntelliJ IDEA (Gradle):**
   1. *Clone* atau buka folder proyek ini di IntelliJ IDEA.
-  2. Tunggu proses *Gradle Sync* mengunduh `mysql-connector-j`.
+  2. Tunggu proses *Gradle Sync* mengunduh `mysql-connector-j:8.3.0`.
   3. Jalankan file **`src/main/java/pbo/dimsum/app/Main.java`**.
 * **Menggunakan Apache NetBeans (Java with Ant):**
   1. Buat proyek *Java Application* baru (tanpa *Main Class*).
-  2. Tambahkan library `mysql-connector-j-x.x.x.jar` pada menu *Libraries*.
-  3. Salin folder `pbo` dari `src/main/java/pbo` ke dalam folder `src/` proyek NetBeans, lalu jalankan `Main.java`.
+  2. Tambahkan library `mysql-connector-j-8.3.0.jar` pada menu *Libraries*.
+  3. Salin folder `pbo` dari `src/main/java/pbo` serta file **`database.sql`** dari `src/main/resources/` ke dalam folder `src/` proyek NetBeans, lalu jalankan `pbo.dimsum.app.Main`.
 
 ---
 
@@ -45,5 +50,5 @@ Aplikasi menerapkan pembatasan hak akses berdasarkan peran (*Role-Based Access C
 
 | Role | Username | Password | Hak Akses |
 | :--- | :--- | :--- | :--- |
-| **Staff (Gudang)** | `admin1` | `admin123` | Akses penuh Data Master (*Supplier, Bahan Baku, Dimsum*) |
-| **Koki (Dapur)** | `chef_eko` | `koki123` | Akses Transaksi Permintaan Bahan & Riwayat Transaksi |
+| **Staff (Gudang)** | `staff1` | `admin123` | Akses penuh Data Master (*Supplier, Bahan Baku, Dimsum*) |
+| **Koki (Dapur)** | `chef_cj` | `koki123` | Akses Transaksi Permintaan Bahan & Riwayat Transaksi |
