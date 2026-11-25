@@ -72,12 +72,4 @@ public class Koneksi {
             System.err.println("Gagal inisialisasi database: " + e.getMessage());
         }
     }
-
-    static void main() {
-        try (Connection conn = getConnection()) {
-            System.out.println("Koneksi berhasil: " + conn.getCatalog());
-        } catch (SQLException ex) {
-            System.out.println("Koneksi gagal: " + ex.getMessage());
-        }
-    }
 }
